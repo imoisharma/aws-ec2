@@ -1,10 +1,13 @@
-# I just Lost my EC2 Key Pair
+## I just Lost my EC2 Key Pair
 
-- Step 1: Create a new key pair
+### Step 1: Create a new key pair
 
-Create a new key pair using either the Amazon EC2 console or a third-party tool. If you want to name your new key pair exactly the same as the lost private key, you must first delete the existing key pair. For information about creating a new key pair https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair
+Create a new key pair using either the Amazon EC2 console or a third-party tool. If you want to name your new key pair exactly the same as the lost private key, you must first delete the existing key pair. For information about creating a new key pair 
 
-- Step 2: To get information about your original instance (new console)
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair
+
+
+### Step 2: To get information about your original instance (new console)
 
     Open the Amazon EC2 console at https://console.aws.amazon.com/ec2/
 
@@ -17,14 +20,14 @@ Create a new key pair using either the Amazon EC2 console or a third-party tool.
     On the Storage tab, note the device name for the root volume in Root device name (for example, /dev/xvda). Find this device name under Block devices and write down the volume ID (for example, vol-0a1234b5678c910de).
   
 
-- Step 3: Stop the original instance
+### Step 3: Stop the original instance
 
 Choose Actions, select Instance State, and then select Stop. If Stop is disabled, either the instance is already stopped or its root device is an instance store volume.
 
 * Warning
 When you stop an instance, the data on any instance store volumes is erased. To keep data from instance store volumes, be sure to back it up to persistent storage.
 
-- Step 4: Launch a temporary instance
+### Step 4: Launch a temporary instance
 
 Choose Launch Instance, and then use the launch wizard to launch a temporary instance with the following options:
 
@@ -38,7 +41,7 @@ Choose Launch Instance, and then use the launch wizard to launch a temporary ins
 
  * On the Review page, choose Launch. Create a new key pair, download it to a safe location on your computer, and then choose Launch Instances.
 
-- Step 5: Detach the root volume from the original instance and attach it to the temporary instance
+### Step 5: Detach the root volume from the original instance and attach it to the temporary instance
 
    1. In the navigation pane, choose Volumes and select the root device volume for the original instance (you wrote down its volume ID in a previous step). Choose Actions, Detach Volume, and then select Yes, Detach. Wait for the state of the volume to become available. (You might need to choose the Refresh icon.)
 
@@ -46,7 +49,7 @@ Choose Launch Instance, and then use the launch wizard to launch a temporary ins
 
 Note-If you launched your original instance from an AWS Marketplace AMI and your volume contains AWS Marketplace codes, you must first stop the temporary instance before you can attach the volume.
 
-Step 6: Add the new public key to authorized_keys on the original volume mounted to the temporary instance
+### Step 6: Add the new public key to authorized_keys on the original volume mounted to the temporary instance
 
     Connect to the temporary instance.
 
@@ -111,7 +114,7 @@ If the user ID and group ID have changed, use the following command to restore t
 
     [ec2-user ~]$ sudo chown 222:500 /mnt/tempvol/home/ec2-user/.ssh/authorized_keys
 
-- Step 7: Unmount and detach the original volume from the temporary instance, and reattach it to the original instance
+### Step 7: Unmount and detach the original volume from the temporary instance, and reattach it to the original instance
 
     From the temporary instance, unmount the volume that you attached so that you can reattach it to the original instance. For example, use the following command to unmount the volume at /mnt/tempvol.
 
@@ -125,7 +128,7 @@ Reattach the volume to the original instance: With the volume still selected, ch
 
     If you don't specify the same device name as the original attachment, you cannot start the original instance. Amazon EC2 expects the root device volume at sda1 or /dev/xvda.
 
-- Step 8: Connect to the original instance using the new key pair
+### Step 8: Connect to the original instance using the new key pair
 
 Select the original instance, choose Actions, select Instance State, and then choose Start. After the instance enters the running state, you can connect to it using the private key file for your new key pair. 
 
